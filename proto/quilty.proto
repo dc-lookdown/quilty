@@ -1,0 +1,109 @@
+// The service is broken down into 3 different methods.
+//  1. InitializeGameState
+//      This is called to create an inital game, when called
+//      all the tiles in the game will be given in addition to
+//      the player ID order and any ohter initial parameters.
+//  2. GetGameState
+//      This returns the current game state.
+//  3. UpdateGameState
+//      Updates the game state with a player's move.  The
+        ID in the update request must match the current one.
+
+// Description of a single tile to be placed on the board.
+message Tile {
+  // Unique ID for a given tile.
+  int id = 1;
+
+  // Point Cost
+  int point_cost = 2;
+
+  // Time Cost
+  int time_cost = 3;
+
+  // Points generator.
+  int points_generates = 4;
+
+  // Size of the tile.
+  // a single number indicates the square size.
+  int height = 5;
+  int width = 6;
+
+  // Number representing a bitmask of the area in the tile.
+  //
+  // For example if a tile is a 3x3 it would have size 3 and
+  // if the shape is a cross we would have number
+  //
+  //  [ ][x][ ]
+  //  [x][x][x] -> [ ][x][ ][x][x][x][ ][x][ ] -> 0b010111010
+  //  [ ][x][ ]                                   (186)
+  //
+  int64 area = 7;
+}
+
+messsage PlacedTile {
+  // Id of the placed tile.
+  int32 id = 1;
+
+  // Position of upper-left cell tile in the grid.
+  int32 position = 2;
+
+  // Rotation of the placed tile.
+  int32 rotation = 3;
+
+  // If the tile is mirrored or not.
+  boolean mirrored = 4;
+}
+
+message GameState {
+  // Id of the gamestate, used for validation.
+  string id = 1;
+
+  // The player states.
+  repeated PlayerState = 2;
+
+  // Player turn.
+  int32 player_turn = 3;
+
+  // Player order.
+  repeated string player_order = 4;
+}
+
+message QuiltBoard {
+  int board_size = 1;
+  
+  repeated PlacedTile = 2;
+}
+
+message PlayerState {
+  // The users board
+  QuiltBoard board = 1;
+
+  // The number of points they have.
+  int32 points = 2;
+
+  // The time left for the user.
+  int32 time_left = 3;
+
+  // Bonus points.
+  int32 bonus_points = 4;
+}
+
+message InitializeGameRequest {
+  // Unique id for the requset to create a game.
+  string request_id = 1;
+
+  // TODO: Provide paramteers or something.
+}
+
+message InitializeGameResponse {
+  string game_id = 1;
+  string state_id = 2;
+  repeated Tiles = 3;
+  GameState game_state = 4;
+}
+
+service QuiltyService {
+  rpc InitializeGame(InitializeGameRequest) returns (InitializeGameResponse);
+  rpc GetGameState(GetGameStateRequest) returns (GameState);
+  rpc UpdateGameState(UpdateGameStateRequest) returns (GameState);
+}
