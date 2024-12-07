@@ -1,11 +1,11 @@
-// Build rules for the quilty protos.
+# Build rules for the quilty protos.
 
 proto_library(
-  name = "quility"
+  name = "quilty"
 )
 
 
 java_proto_library(
-    name = "quility_java_proto",
-    deps = [":quility"],
+    name = "quilty_java_proto",
+    deps = [":quilty"],
 )

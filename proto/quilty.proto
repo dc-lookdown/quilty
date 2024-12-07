@@ -1,3 +1,9 @@
+syntax = "proto2";
+
+package quilty;
+
+option java_package = "com.quilty.service.protos";
+
 // The service is broken down into 3 different methods.
 //  1. InitializeGameState
 //      This is called to create an inital game, when called
@@ -7,7 +13,7 @@
 //      This returns the current game state.
 //  3. UpdateGameState
 //      Updates the game state with a player's move.  The
-        ID in the update request must match the current one.
+//      ID in the update request must match the current one.
 
 // Description of a single tile to be placed on the board.
 message Tile {
